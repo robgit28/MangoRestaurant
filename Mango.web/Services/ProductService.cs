@@ -62,15 +62,5 @@ namespace Mango.web.Services
                 AccessToken = ""
             });
         }
-
-        public Task<T> SendAsync<T>(ApiRequest apiRequest)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Dispose()
-        {
-            throw new NotImplementedException();
-        }
     }
 }
