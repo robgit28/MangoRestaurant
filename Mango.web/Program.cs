@@ -21,7 +21,9 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+// redirects any http requests to https (secure network) - recommended for prod apps 
 app.UseHttpsRedirection();
+// serves static files such as html, JS, CSS, image files without any server-side processing
 app.UseStaticFiles();
 
 app.UseRouting();
