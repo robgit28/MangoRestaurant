@@ -30,7 +30,7 @@ builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("ApiScope", policy => {
         policy.RequireAuthenticatedUser();
-        policy.RequireClaim("scope", "mangoAdmin");
+        policy.RequireClaim("scope", "mango");
 
     });
 }); 
@@ -92,6 +92,7 @@ if (app.Environment.IsDevelopment())
 // redirects any http requests to https (secure network) - recommended for prod apps 
 app.UseHttpsRedirection();
 
+//app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

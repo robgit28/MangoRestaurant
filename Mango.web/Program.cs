@@ -10,6 +10,34 @@ builder.Services.AddHttpClient<IProductService, ProductService>();
 Constants.ProductAPIBase = builder.Configuration["ServiceUrls:ProductAPI"];
 // Add Product service 
 builder.Services.AddScoped<IProductService, ProductService>();
+// Identity Server Authentication
+builder.Services.AddAuthentication(options =>
+    {
+        options.DefaultScheme = "Cookies";
+        options.DefaultChallengeScheme = "oidc";
+    })
+    // cookies expires after 10 mins 
+    .AddCookie("Cookies", c => c.ExpireTimeSpan=TimeSpan.FromMinutes(10))
+    .AddOpenIdConnect("oidc", options =>
+    {
+        // from appsettings - IdentityAPI - see Constants reference above
+        options.Authority = builder.Configuration["ServiceUrls:IdentityAPI"];
+        // see ClientId in Constants file in Identitty Project  
+        options.ClientId = "mango";
+        // see ClientSecret in Constants file in Identitty Project  
+        options.ClientSecret = "secret";
+        // see AllowedGrantTypes in Constants file in Identitty Project  
+        options.ResponseType = "code";
+        options.TokenValidationParameters.NameClaimType = "name"; 
+        options.TokenValidationParameters.RoleClaimType = "role"; 
+        //options.Scope.Add("openid");
+        //options.Scope.Add("profile");
+        // see APIScope (name) in Constants file in Identitty Project - new ApiScope("mango", "Mango Server."),
+        options.Scope.Add("mango");
+        options.SaveTokens = true;
+        //options.GetClaimsFromUserInfoEndpoint = true;
+        //options.ClaimActions.MapJsonKey("role", "role", "role");
+    });
 
 var app = builder.Build();
 
@@ -28,6 +56,8 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+// UseAuthentication always before UseAuthorization
+app.UseAuthentication(); 
 app.UseAuthorization();
 
 app.MapControllerRoute(
