@@ -29,7 +29,7 @@ namespace Mango.Server.Identity
                 // these names can be anything we want 
                 // first argument is the unique name of the API
                 // the second argument is the DisplayName. this value can be used on the consent screen.
-                new ApiScope("mangoAdmin", "Mango Server."),
+                new ApiScope("mango", "Mango Server."),
                 new ApiScope(name: "read", displayName: "Read your data."),
                 new ApiScope(name: "write", displayName: "Write your data."),
                 new ApiScope(name: "delete", displayName: "Delete your data."),
@@ -51,25 +51,27 @@ namespace Mango.Server.Identity
                 new Client
                 {
                     ClientId = "mango",
+                    ClientSecrets = { new Secret("secret".Sha256()) },
                     AllowedGrantTypes = GrantTypes.Code,
                     // in production this would be more secure like a Guid 
-                    ClientSecrets = { new Secret("secret".Sha256()) },
                     AllowedScopes = new List<string> 
                     { 
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Email,
                         IdentityServerConstants.StandardScopes.Profile,
                         "mango"
-                        
+
                     },
                     // the redirect url on login 
                     // from the Mango.web project - launchSettings.json 
                     // for openId Connect 
                     // should be https 
-                    RedirectUris = { "https://localhost:44397/signin-oidc" },
+                    RedirectUris = { "https://localhost:7290/signin-oidc" },
                     // the redirect url on logout  
                     // should be https 
-                    PostLogoutRedirectUris = { "https://localhost:44397/signout-callback-oidc" },    
+                    //44397
+                    //7294
+                    PostLogoutRedirectUris = { "https://localhost:7290/signout-callback-oidc" },    
                 }
             }; 
     }
